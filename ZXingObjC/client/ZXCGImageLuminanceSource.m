@@ -130,7 +130,7 @@
   CGImageRef _image = [ZXCGImageLuminanceSource newImageFromBuffer:buffer left:(int)_left top:(int)_top width:(int)_width height:(int)_height];
 
   self = [self initWithCGImage:_image];
-
+  CGImageRelease(_image);
   return self;
 }
 
@@ -138,7 +138,7 @@
   CGImageRef _image = [ZXCGImageLuminanceSource newImageFromBuffer:buffer];
 
   self = [self initWithCGImage:_image];
-
+  CGImageRelease(_image);
   return self;
 }
 
@@ -287,7 +287,10 @@
   CFRelease(context);
 
   int _width = self.width;
-  return [[ZXCGImageLuminanceSource alloc] initWithCGImage:rotatedImage left:top top:sourceWidth - (left + _width) width:self.height height:_width];
+  ZXCGImageLuminanceSource *zXCGImageLuminanceSource =
+    [[ZXCGImageLuminanceSource alloc] initWithCGImage:rotatedImage left:top top:sourceWidth - (left + _width) width:self.height height:_width];
+  CGImageRelease(rotatedImage);
+  return zXCGImageLuminanceSource;
 }
 
 @end

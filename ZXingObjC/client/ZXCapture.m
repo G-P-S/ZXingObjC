@@ -550,11 +550,12 @@ ZXAV(didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer)
 
   CGImageRef videoFrameImage = [ZXCGImageLuminanceSource newImageFromBuffer:videoFrame];
   CGImageRef rotatedImage = [self newRotatedImage:videoFrameImage degrees:rotation];
-
+  CGImageRelease(videoFrameImage);
   ZXCGImageLuminanceSource *source
     = [[ZXCGImageLuminanceSource alloc]
         initWithCGImage:rotatedImage];
 
+  CGImageRelease(rotatedImage);
   if (luminance) {
     CGImageRef image = source.image;
     CGImageRetain(image);
