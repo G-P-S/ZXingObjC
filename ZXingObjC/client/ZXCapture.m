@@ -50,9 +50,9 @@ static bool isIPad();
 @synthesize rotation;
 
 // Adapted from http://blog.coriolis.ch/2009/09/04/arbitrary-rotation-of-a-cgimage/ and https://github.com/JanX2/CreateRotateWriteCGImage
-- (CGImageRef)rotateImage:(CGImageRef)original degrees:(float)degrees {
+- (CGImageRef)newRotatedImage:(CGImageRef)original degrees:(float)degrees {
   if (degrees == 0.0f) {
-    return original;
+    return CGImageRetain(original);
   } else {
     double radians = degrees * M_PI / 180;
 
@@ -536,7 +536,7 @@ ZXAV(didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer)
 
   if (captureToFilename) {
     CGImageRef image = 
-      [ZXCGImageLuminanceSource createImageFromBuffer:videoFrame];
+      [ZXCGImageLuminanceSource newImageFromBuffer:videoFrame];
     NSURL *url = [NSURL fileURLWithPath:captureToFilename];
     CGImageDestinationRef dest =
       CGImageDestinationCreateWithURL((CFURLRef)url, kUTTypePNG, 1, nil);
@@ -548,8 +548,8 @@ ZXAV(didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer)
   }
 #endif
 
-  CGImageRef videoFrameImage = [ZXCGImageLuminanceSource createImageFromBuffer:videoFrame];
-  CGImageRef rotatedImage = [self rotateImage:videoFrameImage degrees:rotation];
+  CGImageRef videoFrameImage = [ZXCGImageLuminanceSource newImageFromBuffer:videoFrame];
+  CGImageRef rotatedImage = [self newRotatedImage:videoFrameImage degrees:rotation];
 
   ZXCGImageLuminanceSource *source
     = [[ZXCGImageLuminanceSource alloc]
@@ -569,7 +569,7 @@ ZXAV(didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer)
     [binarizer initWithSource:source] ;
 
     if (binary) {
-      CGImageRef image = binarizer.createImage;
+      CGImageRef image = binarizer.newImage;
       dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0), dispatch_get_main_queue(), ^{
         binary.contents = (__bridge id)image;
         CGImageRelease(image);

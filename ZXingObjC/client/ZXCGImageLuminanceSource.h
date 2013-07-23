@@ -26,8 +26,8 @@
   int top;
 }
 
-+ (CGImageRef)createImageFromBuffer:(CVImageBufferRef)buffer;
-+ (CGImageRef)createImageFromBuffer:(CVImageBufferRef)buffer
++ (CGImageRef)newImageFromBuffer:(CVImageBufferRef)buffer;
++ (CGImageRef)newImageFromBuffer:(CVImageBufferRef)buffer
                                left:(size_t)left
                                 top:(size_t)top
                               width:(size_t)width

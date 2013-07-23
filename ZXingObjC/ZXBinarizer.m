@@ -88,7 +88,7 @@
                                userInfo:nil];
 }
 
-- (CGImageRef)createImage {
+- (CGImageRef)newImage {
   ZXBitMatrix *matrix = [self blackMatrixWithError:nil];
   if (!matrix) {
     return nil;
