@@ -20,7 +20,7 @@
 @interface ZXMode ()
 
 @property (nonatomic, assign) int bits;
-@property (nonatomic, retain) NSArray *characterCountBitsForVersions;
+@property (nonatomic, strong) NSArray *characterCountBitsForVersions;
 @property (nonatomic, copy) NSString *name;
 
 @end
@@ -43,12 +43,6 @@
   return self;
 }
 
-- (void)dealloc {
-  [characterCountBitsForVersions release];
-  [name release];
-
-  [super dealloc];
-}
 
 + (ZXMode *)forBits:(int)bits {
   switch (bits) {

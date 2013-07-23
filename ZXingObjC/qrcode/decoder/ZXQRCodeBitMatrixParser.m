@@ -23,9 +23,9 @@
 
 @interface ZXQRCodeBitMatrixParser ()
 
-@property (nonatomic, retain) ZXBitMatrix *bitMatrix;
-@property (nonatomic, retain) ZXFormatInformation *parsedFormatInfo;
-@property (nonatomic, retain) ZXQRCodeVersion *parsedVersion;
+@property (nonatomic, strong) ZXBitMatrix *bitMatrix;
+@property (nonatomic, strong) ZXFormatInformation *parsedFormatInfo;
+@property (nonatomic, strong) ZXQRCodeVersion *parsedVersion;
 
 - (int)copyBit:(int)i j:(int)j versionBits:(int)versionBits;
 
@@ -52,13 +52,6 @@
   return self;
 }
 
-- (void)dealloc {
-  [bitMatrix release];
-  [parsedVersion release];
-  [parsedFormatInfo release];
-
-  [super dealloc];
-}
 
 /**
  * Reads format information from one of its two locations within the QR Code.

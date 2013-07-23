@@ -20,9 +20,9 @@
 
 @interface ZXExpandedPair ()
 
-@property (nonatomic, retain) ZXDataCharacter *leftChar;
-@property (nonatomic, retain) ZXDataCharacter *rightChar;
-@property (nonatomic, retain) ZXRSSFinderPattern *finderPattern;
+@property (nonatomic, strong) ZXDataCharacter *leftChar;
+@property (nonatomic, strong) ZXDataCharacter *rightChar;
+@property (nonatomic, strong) ZXRSSFinderPattern *finderPattern;
 @property (nonatomic, assign) BOOL mayBeLast;
 
 @end
@@ -46,13 +46,6 @@
   return self;
 }
 
-- (void)dealloc {
-  [leftChar release];
-  [rightChar release];
-  [finderPattern release];
-
-  [super dealloc];
-}
 
 - (BOOL)mustBeLast {
   return self.rightChar == nil;

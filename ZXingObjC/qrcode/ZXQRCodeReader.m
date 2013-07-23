@@ -28,7 +28,7 @@
 
 @interface ZXQRCodeReader ()
 
-@property (nonatomic, retain) ZXQRCodeDecoder *decoder;
+@property (nonatomic, strong) ZXQRCodeDecoder *decoder;
 
 - (ZXBitMatrix *)extractPureBits:(ZXBitMatrix *)image;
 - (float)moduleSize:(NSArray *)leftTopBlack image:(ZXBitMatrix *)image;
@@ -41,17 +41,12 @@
 
 - (id)init {
   if (self = [super init]) {
-    self.decoder = [[[ZXQRCodeDecoder alloc] init] autorelease];
+    self.decoder = [[ZXQRCodeDecoder alloc] init];
   }
 
   return self;
 }
 
-- (void)dealloc {
-  [decoder release];
-
-  [super dealloc];
-}
 
 /**
  * Locates and decodes a QR code in an image.
@@ -79,7 +74,7 @@
     }
     points = [NSArray array];
   } else {
-    ZXDetectorResult *detectorResult = [[[[ZXQRCodeDetector alloc] initWithImage:matrix] autorelease] detect:hints error:error];
+    ZXDetectorResult *detectorResult = [[[ZXQRCodeDetector alloc] initWithImage:matrix] detect:hints error:error];
     if (!detectorResult) {
       return nil;
     }
@@ -153,7 +148,7 @@
   top += nudge;
   left += nudge;
 
-  ZXBitMatrix *bits = [[[ZXBitMatrix alloc] initWithWidth:matrixWidth height:matrixHeight] autorelease];
+  ZXBitMatrix *bits = [[ZXBitMatrix alloc] initWithWidth:matrixWidth height:matrixHeight];
   for (int y = 0; y < matrixHeight; y++) {
     int iOffset = top + (int) (y * moduleSize);
     for (int x = 0; x < matrixWidth; x++) {

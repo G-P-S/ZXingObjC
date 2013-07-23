@@ -18,15 +18,15 @@
 
 @interface ZXCalendarParsedResult ()
 
-@property(nonatomic, retain) NSString *summary;
-@property(nonatomic, retain) NSDate *start;
+@property(nonatomic, strong) NSString *summary;
+@property(nonatomic, strong) NSDate *start;
 @property(nonatomic) BOOL startAllDay;
-@property(nonatomic, retain) NSDate *end;
+@property(nonatomic, strong) NSDate *end;
 @property(nonatomic) BOOL endAllDay;
-@property(nonatomic, retain) NSString *location;
-@property(nonatomic, retain) NSString *organizer;
-@property(nonatomic, retain) NSArray *attendees;
-@property(nonatomic, retain) NSString *description;
+@property(nonatomic, strong) NSString *location;
+@property(nonatomic, strong) NSString *organizer;
+@property(nonatomic, strong) NSArray *attendees;
+@property(nonatomic, strong) NSString *description;
 @property(nonatomic) double latitude;
 @property(nonatomic) double longitude;
 
@@ -106,20 +106,10 @@ const long RFC2445_DURATION_FIELD_UNITS[RFC2445_DURATION_FIELD_UNITS_LEN] = {
 
 + (id)calendarParsedResultWithSummary:(NSString *)summary startString:(NSString *)startString endString:(NSString *)endString durationString:(NSString *)durationString
                              location:(NSString *)location organizer:(NSString *)organizer attendees:(NSArray *)attendees description:(NSString *)description latitude:(double)latitude longitude:(double)longitude {
-  return [[[self alloc] initWithSummary:summary startString:startString endString:endString durationString:durationString location:location organizer:organizer attendees:attendees
-                            description:description latitude:latitude longitude:longitude] autorelease];
+  return [[self alloc] initWithSummary:summary startString:startString endString:endString durationString:durationString location:location organizer:organizer attendees:attendees
+                            description:description latitude:latitude longitude:longitude];
 }
 
-- (void)dealloc {
-  [summary release];
-  [start release];
-  [end release];
-  [location release];
-  [organizer release];
-  [attendees release];
-  [description release];
-  [super dealloc];
-}
 
 - (NSString *)displayResult {
   NSMutableString *result = [NSMutableString stringWithCapacity:100];

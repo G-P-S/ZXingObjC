@@ -21,7 +21,7 @@
 
 @interface ZXReedSolomonDecoder ()
 
-@property (nonatomic, retain) ZXGenericGF *field;
+@property (nonatomic, strong) ZXGenericGF *field;
 
 - (NSArray *)runEuclideanAlgorithm:(ZXGenericGFPoly *)a b:(ZXGenericGFPoly *)b R:(int)R error:(NSError **)error;
 - (NSArray *)findErrorLocations:(ZXGenericGFPoly *)errorLocator error:(NSError **)error;
@@ -42,11 +42,6 @@
   return self;
 }
 
-- (void)dealloc {
-  [field release];
-
-  [super dealloc];
-}
 
 
 /**
@@ -55,7 +50,7 @@
  * in the input.
  */
 - (BOOL)decode:(int *)received receivedLen:(int)receivedLen twoS:(int)twoS error:(NSError **)error {
-  ZXGenericGFPoly *poly = [[[ZXGenericGFPoly alloc] initWithField:field coefficients:received coefficientsLen:receivedLen] autorelease];
+  ZXGenericGFPoly *poly = [[ZXGenericGFPoly alloc] initWithField:field coefficients:received coefficientsLen:receivedLen];
   int syndromeCoefficientsLen = twoS;
   int syndromeCoefficients[syndromeCoefficientsLen];
   BOOL noError = YES;
@@ -70,7 +65,7 @@
   if (noError) {
     return YES;
   }
-  ZXGenericGFPoly *syndrome = [[[ZXGenericGFPoly alloc] initWithField:field coefficients:syndromeCoefficients coefficientsLen:syndromeCoefficientsLen] autorelease];
+  ZXGenericGFPoly *syndrome = [[ZXGenericGFPoly alloc] initWithField:field coefficients:syndromeCoefficients coefficientsLen:syndromeCoefficientsLen];
   NSArray *sigmaOmega = [self runEuclideanAlgorithm:[field buildMonomial:twoS coefficient:1] b:syndrome R:twoS error:error];
   if (!sigmaOmega) {
     return NO;
@@ -88,7 +83,7 @@
       NSDictionary *userInfo = [NSDictionary dictionaryWithObject:@"Bad error location"
                                                            forKey:NSLocalizedDescriptionKey];
       
-      if (error) *error = [[[NSError alloc] initWithDomain:ZXErrorDomain code:ZXReedSolomonError userInfo:userInfo] autorelease];
+      if (error) *error = [[NSError alloc] initWithDomain:ZXErrorDomain code:ZXReedSolomonError userInfo:userInfo];
       return NO;
     }
     received[position] = [ZXGenericGF addOrSubtract:received[position] b:[[errorMagnitudes objectAtIndex:i] intValue]];
@@ -118,7 +113,7 @@
       NSDictionary *userInfo = [NSDictionary dictionaryWithObject:@"r_{i-1} was zero"
                                                            forKey:NSLocalizedDescriptionKey];
 
-      if (error) *error = [[[NSError alloc] initWithDomain:ZXErrorDomain code:ZXReedSolomonError userInfo:userInfo] autorelease];
+      if (error) *error = [[NSError alloc] initWithDomain:ZXErrorDomain code:ZXReedSolomonError userInfo:userInfo];
       return NO;
     }
     r = rLastLast;
@@ -141,7 +136,7 @@
     NSDictionary *userInfo = [NSDictionary dictionaryWithObject:@"sigmaTilde(0) was zero"
                                                          forKey:NSLocalizedDescriptionKey];
 
-    if (error) *error = [[[NSError alloc] initWithDomain:ZXErrorDomain code:ZXReedSolomonError userInfo:userInfo] autorelease];
+    if (error) *error = [[NSError alloc] initWithDomain:ZXErrorDomain code:ZXReedSolomonError userInfo:userInfo];
     return NO;
   }
 
@@ -169,7 +164,7 @@
     NSDictionary *userInfo = [NSDictionary dictionaryWithObject:@"Error locator degree does not match number of roots"
                                                          forKey:NSLocalizedDescriptionKey];
     
-    if (error) *error = [[[NSError alloc] initWithDomain:ZXErrorDomain code:ZXReedSolomonError userInfo:userInfo] autorelease];
+    if (error) *error = [[NSError alloc] initWithDomain:ZXErrorDomain code:ZXReedSolomonError userInfo:userInfo];
     return nil;
   }
   return result;

@@ -19,8 +19,8 @@
 
 @interface ZXDetectorResult ()
 
-@property (nonatomic, retain) ZXBitMatrix *bits;
-@property (nonatomic, retain) NSArray *points;
+@property (nonatomic, strong) ZXBitMatrix *bits;
+@property (nonatomic, strong) NSArray *points;
 
 @end
 
@@ -38,11 +38,5 @@
   return self;
 }
 
-- (void)dealloc {
-  [bits release];
-  [points release];
-
-  [super dealloc];
-}
 
 @end

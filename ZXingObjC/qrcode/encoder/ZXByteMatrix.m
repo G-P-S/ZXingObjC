@@ -54,7 +54,6 @@
     self.array = NULL;
   }
 
-  [super dealloc];
 }
 
 - (char)getX:(int)x y:(int)y {

@@ -29,7 +29,7 @@
 
 @interface ZXQRCodeDecoder ()
 
-@property (nonatomic, retain) ZXReedSolomonDecoder *rsDecoder;
+@property (nonatomic, strong) ZXReedSolomonDecoder *rsDecoder;
 
 - (BOOL)correctErrors:(NSMutableArray *)codewordBytes numDataCodewords:(int)numDataCodewords error:(NSError **)error;
 
@@ -41,17 +41,12 @@
 
 - (id)init {
   if (self = [super init]) {
-    self.rsDecoder = [[[ZXReedSolomonDecoder alloc] initWithField:[ZXGenericGF QrCodeField256]] autorelease];
+    self.rsDecoder = [[ZXReedSolomonDecoder alloc] initWithField:[ZXGenericGF QrCodeField256]];
   }
 
   return self;
 }
 
-- (void)dealloc {
-  [rsDecoder release];
-
-  [super dealloc];
-}
 
 - (ZXDecoderResult *)decode:(BOOL **)image length:(unsigned int)length error:(NSError **)error {
   return [self decode:image length:length hints:nil error:error];
@@ -64,7 +59,7 @@
  */
 - (ZXDecoderResult *)decode:(BOOL **)image length:(unsigned int)length hints:(ZXDecodeHints *)hints error:(NSError **)error {
   int dimension = length;
-  ZXBitMatrix *bits = [[[ZXBitMatrix alloc] initWithDimension:dimension] autorelease];
+  ZXBitMatrix *bits = [[ZXBitMatrix alloc] initWithDimension:dimension];
   for (int i = 0; i < dimension; i++) {
     for (int j = 0; j < dimension; j++) {
       if (image[i][j]) {
@@ -85,7 +80,7 @@
  * Decodes a QR Code represented as a {@link BitMatrix}. A 1 or "true" is taken to mean a black module.
  */
 - (ZXDecoderResult *)decodeMatrix:(ZXBitMatrix *)bits hints:(ZXDecodeHints *)hints error:(NSError **)error {
-  ZXQRCodeBitMatrixParser *parser = [[[ZXQRCodeBitMatrixParser alloc] initWithBitMatrix:bits error:error] autorelease];
+  ZXQRCodeBitMatrixParser *parser = [[ZXQRCodeBitMatrixParser alloc] initWithBitMatrix:bits error:error];
   if (!parser) {
     return nil;
   }

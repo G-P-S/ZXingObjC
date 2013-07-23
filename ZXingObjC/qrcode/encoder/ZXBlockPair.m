@@ -56,7 +56,6 @@
     self.errorCorrectionBytes = NULL;
   }
 
-  [super dealloc];
 }
 
 @end

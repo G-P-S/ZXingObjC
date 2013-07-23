@@ -56,7 +56,7 @@ const int BITNR[33][30] = {
 
 @interface ZXMaxiCodeBitMatrixParser ()
 
-@property (nonatomic, retain) ZXBitMatrix *bitMatrix;
+@property (nonatomic, strong) ZXBitMatrix *bitMatrix;
 
 @end
 
@@ -72,11 +72,6 @@ const int BITNR[33][30] = {
   return self;
 }
 
-- (void)dealloc {
-  [bitMatrix release];
-
-  [super dealloc];
-}
 
 - (NSArray *)readCodewords {
   const int resultLength = 144;

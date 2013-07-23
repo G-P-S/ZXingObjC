@@ -18,8 +18,8 @@
 
 @interface ZXEANManufacturerOrgSupport ()
 
-@property (nonatomic, retain) NSMutableArray *countryIdentifiers;
-@property (nonatomic, retain) NSMutableArray *ranges;
+@property (nonatomic, strong) NSMutableArray *countryIdentifiers;
+@property (nonatomic, strong) NSMutableArray *ranges;
 
 - (void)add:(NSArray *)range identifier:(NSString *)identifier;
 - (void)initIfNeeded;
@@ -40,12 +40,6 @@
   return self;
 }
 
-- (void)dealloc {
-  [countryIdentifiers release];
-  [ranges release];
-
-  [super dealloc];
-}
 
 - (NSString *)lookupCountryIdentifier:(NSString *)productCode {
   [self initIfNeeded];

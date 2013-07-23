@@ -21,7 +21,7 @@
 @property (nonatomic, assign) unsigned char *rawBytes;
 @property (nonatomic, assign) int length;
 @property (nonatomic, copy) NSString *text;
-@property (nonatomic, retain) NSMutableArray *byteSegments;
+@property (nonatomic, strong) NSMutableArray *byteSegments;
 @property (nonatomic, copy) NSString *ecLevel;
 
 @end
@@ -50,12 +50,5 @@
   return self;
 }
 
-- (void) dealloc {
-  [text release];
-  [byteSegments release];
-  [ecLevel release];
-
-  [super dealloc];
-}
 
 @end

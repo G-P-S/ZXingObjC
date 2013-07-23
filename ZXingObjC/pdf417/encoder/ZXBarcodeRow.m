@@ -31,7 +31,7 @@
 @synthesize rowLength;
 
 + (ZXBarcodeRow *)barcodeRowWithWidth:(int)width {
-  return [[[ZXBarcodeRow alloc] initWithWidth:width] autorelease];
+  return [[ZXBarcodeRow alloc] initWithWidth:width];
 }
 
 - (id)initWithWidth:(int)width {
@@ -50,7 +50,6 @@
     self.row = NULL;
   }
 
-  [super dealloc];
 }
 
 - (void)setX:(int)x value:(unsigned char)value {

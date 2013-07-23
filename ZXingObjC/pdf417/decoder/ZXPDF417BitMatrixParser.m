@@ -663,12 +663,12 @@ const int CODEWORD_TABLE[2787] = {2627, 1819, 2622, 2621, 1813,
 
 @interface ZXPDF417BitMatrixParser ()
 
-@property (nonatomic, retain) ZXBitMatrix *bitMatrix;
+@property (nonatomic, strong) ZXBitMatrix *bitMatrix;
 @property (nonatomic, assign) int rows;
 @property (nonatomic, assign) int leftColumnECData;
 @property (nonatomic, assign) int rightColumnECData;
 @property (nonatomic, assign) int eraseCount;
-@property (nonatomic, retain) NSMutableArray *erasures;
+@property (nonatomic, strong) NSMutableArray *erasures;
 @property (nonatomic, assign) int ecLevel;
 
 - (int)codeword:(long)symbol;
@@ -701,12 +701,6 @@ const int CODEWORD_TABLE[2787] = {2627, 1819, 2622, 2621, 1813,
   return self;
 }
 
-- (void)dealloc {
-  [bitMatrix release];
-  [erasures release];
-
-  [super dealloc];
-}
 
 
 /**
@@ -811,7 +805,7 @@ const int CODEWORD_TABLE[2787] = {2627, 1819, 2622, 2621, 1813,
     rowNumber++;
     self.rows = rowNumber;
   }
-  self.erasures = [[[self.erasures subarrayWithRange:NSMakeRange(0, self.eraseCount)] mutableCopy] autorelease];
+  self.erasures = [[self.erasures subarrayWithRange:NSMakeRange(0, self.eraseCount)] mutableCopy];
   return [codewords subarrayWithRange:NSMakeRange(0, next)];
 }
 

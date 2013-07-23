@@ -21,7 +21,7 @@
 
 @property (nonatomic, assign) int *coefficients;
 @property (nonatomic, assign) int coefficientsLen;
-@property (nonatomic, retain) ZXGenericGF *field;
+@property (nonatomic, strong) ZXGenericGF *field;
 
 @end
 
@@ -67,9 +67,7 @@
     free(self.coefficients);
     self.coefficients = NULL;
   }
-  [field release];
 
-  [super dealloc];
 }
 
 
@@ -136,7 +134,7 @@
     sumDiff[i] = [ZXGenericGF addOrSubtract:smallerCoefficients[i - lengthDiff] b:largerCoefficients[i]];
   }
 
-  return [[[ZXGenericGFPoly alloc] initWithField:self.field coefficients:sumDiff coefficientsLen:largerCoefficientsLen] autorelease];
+  return [[ZXGenericGFPoly alloc] initWithField:self.field coefficients:sumDiff coefficientsLen:largerCoefficientsLen];
 }
 
 - (ZXGenericGFPoly *) multiply:(ZXGenericGFPoly *)other {
@@ -161,7 +159,7 @@
                                                 b:[field multiply:aCoeff b:bCoefficients[j]]];
     }
   }
-  return [[[ZXGenericGFPoly alloc] initWithField:field coefficients:product coefficientsLen:productLen] autorelease];
+  return [[ZXGenericGFPoly alloc] initWithField:field coefficients:product coefficientsLen:productLen];
 }
 
 - (ZXGenericGFPoly *)multiplyScalar:(int)scalar {
@@ -176,7 +174,7 @@
   for (int i = 0; i < size; i++) {
     product[i] = [self.field multiply:self.coefficients[i] b:scalar];
   }
-  return [[[ZXGenericGFPoly alloc] initWithField:self.field coefficients:product coefficientsLen:size] autorelease];
+  return [[ZXGenericGFPoly alloc] initWithField:self.field coefficients:product coefficientsLen:size];
 }
 
 - (ZXGenericGFPoly *)multiplyByMonomial:(int)degree coefficient:(int)coefficient {
@@ -196,7 +194,7 @@
     }
   }
 
-  return [[[ZXGenericGFPoly alloc] initWithField:self.field coefficients:product coefficientsLen:size + degree] autorelease];
+  return [[ZXGenericGFPoly alloc] initWithField:self.field coefficients:product coefficientsLen:size + degree];
 }
 
 - (NSArray *)divide:(ZXGenericGFPoly *)other {

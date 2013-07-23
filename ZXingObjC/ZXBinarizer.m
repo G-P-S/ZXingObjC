@@ -27,7 +27,7 @@
 
 @interface ZXBinarizer ()
 
-@property (nonatomic, retain) ZXLuminanceSource *luminanceSource;
+@property (nonatomic, strong) ZXLuminanceSource *luminanceSource;
 
 @end
 
@@ -44,14 +44,9 @@
 }
 
 + (id)binarizerWithSource:(ZXLuminanceSource *)source {
-  return [[[self alloc] initWithSource:source] autorelease];
+  return [[self alloc] initWithSource:source];
 }
 
-- (void)dealloc {
-  [luminanceSource release];
-
-  [super dealloc];
-}
 
 
 /**
@@ -137,7 +132,6 @@
   }
 
   CGImageRef binary = CGBitmapContextCreateImage(context);
-  [NSMakeCollectable(binary) autorelease];
 
   CGContextRelease(context);
 

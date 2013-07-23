@@ -40,7 +40,7 @@ const int CODE93_ASTERISK_ENCODING = 0x15E;
 
 @interface ZXCode93Reader ()
 
-@property (nonatomic, retain) NSMutableString *decodeRowResult;
+@property (nonatomic, strong) NSMutableString *decodeRowResult;
 
 - (BOOL)checkChecksums:(NSMutableString *)result error:(NSError **)error ;
 - (BOOL)checkOneChecksum:(NSMutableString *)result checkPosition:(int)checkPosition weightMax:(int)weightMax error:(NSError **)error ;
@@ -63,11 +63,6 @@ const int CODE93_ASTERISK_ENCODING = 0x15E;
   return self;
 }
 
-- (void)dealloc {
-  [decodeRowResult release];
-
-  [super dealloc];
-}
 
 - (ZXResult *)decodeRow:(int)rowNumber row:(ZXBitArray *)row hints:(ZXDecodeHints *)hints error:(NSError **)error {
   const int countersLen = 6;
@@ -140,8 +135,8 @@ const int CODE93_ASTERISK_ENCODING = 0x15E;
                          rawBytes:nil
                            length:0
                      resultPoints:[NSArray arrayWithObjects:
-                                   [[[ZXResultPoint alloc] initWithX:left y:(float)rowNumber] autorelease],
-                                   [[[ZXResultPoint alloc] initWithX:right y:(float)rowNumber] autorelease], nil]
+                                   [[ZXResultPoint alloc] initWithX:left y:(float)rowNumber],
+                                   [[ZXResultPoint alloc] initWithX:right y:(float)rowNumber], nil]
                            format:kBarcodeFormatCode93];
 }
 

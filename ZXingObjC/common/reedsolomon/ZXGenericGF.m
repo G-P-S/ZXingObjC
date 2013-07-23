@@ -19,8 +19,8 @@
 
 @interface ZXGenericGF ()
 
-@property (nonatomic, retain) ZXGenericGFPoly *zero;
-@property (nonatomic, retain) ZXGenericGFPoly *one;
+@property (nonatomic, strong) ZXGenericGFPoly *zero;
+@property (nonatomic, strong) ZXGenericGFPoly *one;
 @property (nonatomic, assign) int size;
 @property (nonatomic, assign) int *expTable;
 @property (nonatomic, assign) int *logTable;
@@ -63,9 +63,9 @@
       logTable[expTable[i]] = i;
     }
     // logTable[0] == 0 but this should never be used
-    self.zero = [[[ZXGenericGFPoly alloc] initWithField:self coefficients:NULL coefficientsLen:0] autorelease];
+    self.zero = [[ZXGenericGFPoly alloc] initWithField:self coefficients:NULL coefficientsLen:0];
     int oneInt = 1;
-    self.one = [[[ZXGenericGFPoly alloc] initWithField:self coefficients:&oneInt coefficientsLen:1] autorelease];
+    self.one = [[ZXGenericGFPoly alloc] initWithField:self coefficients:&oneInt coefficientsLen:1];
   }
 
   return self;
@@ -74,10 +74,7 @@
 - (void)dealloc {
   free(expTable);
   free(logTable);
-  [zero release];
-  [one release];
   
-  [super dealloc];
 }
 
 + (ZXGenericGF *)AztecData12 {
@@ -150,7 +147,7 @@
   for (int i = 1; i < coefficientsLen; i++) {
     coefficients[i] = 0;
   }
-  return [[[ZXGenericGFPoly alloc] initWithField:self coefficients:coefficients coefficientsLen:coefficientsLen] autorelease];
+  return [[ZXGenericGFPoly alloc] initWithField:self coefficients:coefficients coefficientsLen:coefficientsLen];
 }
 
 /**

@@ -27,7 +27,7 @@
 
 @interface ZXDataMatrixReader ()
 
-@property (nonatomic, retain) ZXDataMatrixDecoder *decoder;
+@property (nonatomic, strong) ZXDataMatrixDecoder *decoder;
 
 - (ZXBitMatrix *)extractPureBits:(ZXBitMatrix *)image;
 - (int)moduleSize:(NSArray *)leftTopBlack image:(ZXBitMatrix *)image;
@@ -40,17 +40,12 @@
 
 - (id)init {
   if (self = [super init]) {
-    self.decoder = [[[ZXDataMatrixDecoder alloc] init] autorelease];
+    self.decoder = [[ZXDataMatrixDecoder alloc] init];
   }
 
   return self;
 }
 
-- (void) dealloc {
-  [decoder release];
-
-  [super dealloc];
-}
 
 
 /**
@@ -83,7 +78,7 @@
     if (!matrix) {
       return nil;
     }
-    ZXDataMatrixDetector *detector = [[[ZXDataMatrixDetector alloc] initWithImage:matrix error:error] autorelease];
+    ZXDataMatrixDetector *detector = [[ZXDataMatrixDetector alloc] initWithImage:matrix error:error];
     if (!detector) {
       return nil;
     }
@@ -149,7 +144,7 @@
   top += nudge;
   left += nudge;
 
-  ZXBitMatrix *bits = [[[ZXBitMatrix alloc] initWithWidth:matrixWidth height:matrixHeight] autorelease];
+  ZXBitMatrix *bits = [[ZXBitMatrix alloc] initWithWidth:matrixWidth height:matrixHeight];
   for (int y = 0; y < matrixHeight; y++) {
     int iOffset = top + y * moduleSize;
     for (int x = 0; x < matrixWidth; x++) {

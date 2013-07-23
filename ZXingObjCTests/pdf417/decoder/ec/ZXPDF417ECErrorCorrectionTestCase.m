@@ -19,7 +19,7 @@
 
 @interface ZXPDF417ECErrorCorrectionTestCase ()
 
-@property (nonatomic, retain) ZXPDF417ECErrorCorrection *ec;
+@property (nonatomic, strong) ZXPDF417ECErrorCorrection *ec;
 
 - (BOOL)checkDecode:(NSMutableArray *)received;
 - (BOOL)checkDecode:(NSMutableArray *)received erasures:(NSArray *)erasures;
@@ -117,17 +117,12 @@ const int MAX_ERRORS = ERROR_LIMIT / 2;
 
 - (id)initWithInvocation:(NSInvocation *)anInvocation {
   if (self = [super initWithInvocation:anInvocation]) {
-    self.ec = [[[ZXPDF417ECErrorCorrection alloc] init] autorelease];
+    self.ec = [[ZXPDF417ECErrorCorrection alloc] init];
   }
 
   return self;
 }
 
-- (void)dealloc {
-  [ec release];
-
-  [super dealloc];
-}
 
 - (void)testNoError {
   NSMutableArray *received = [NSMutableArray arrayWithArray:PDF417_TEST_WITH_EC];

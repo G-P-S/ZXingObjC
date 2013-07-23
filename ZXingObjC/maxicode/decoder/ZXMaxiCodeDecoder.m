@@ -30,7 +30,7 @@ const int ODD = 2;
 
 @interface ZXMaxiCodeDecoder ()
 
-@property (nonatomic, retain) ZXReedSolomonDecoder *rsDecoder;
+@property (nonatomic, strong) ZXReedSolomonDecoder *rsDecoder;
 
 - (BOOL)correctErrors:(NSMutableArray *)codewordBytes start:(int)start dataCodewords:(int)dataCodewords
           ecCodewords:(int)ecCodewords mode:(int)mode error:(NSError **)error;
@@ -43,28 +43,23 @@ const int ODD = 2;
 
 - (id)init {
   if (self = [super init]) {
-    self.rsDecoder = [[[ZXReedSolomonDecoder alloc] initWithField:[ZXGenericGF MaxiCodeField64]] autorelease];
+    self.rsDecoder = [[ZXReedSolomonDecoder alloc] initWithField:[ZXGenericGF MaxiCodeField64]];
   }
 
   return self;
 }
 
-- (void)dealloc {
-  [rsDecoder release];
-
-  [super dealloc];
-}
 
 - (ZXDecoderResult *)decode:(ZXBitMatrix *)bits error:(NSError **)error {
   return [self decode:bits hints:nil error:error];
 }
 
 - (ZXDecoderResult *)decode:(ZXBitMatrix *)bits hints:(ZXDecodeHints *)hints error:(NSError **)error {
-  ZXMaxiCodeBitMatrixParser *parser = [[[ZXMaxiCodeBitMatrixParser alloc] initWithBitMatrix:bits error:error] autorelease];
+  ZXMaxiCodeBitMatrixParser *parser = [[ZXMaxiCodeBitMatrixParser alloc] initWithBitMatrix:bits error:error];
   if (!parser) {
     return nil;
   }
-  NSMutableArray *codewords = [[[parser readCodewords] mutableCopy] autorelease];
+  NSMutableArray *codewords = [[parser readCodewords] mutableCopy];
 
   if (![self correctErrors:codewords start:0 dataCodewords:10 ecCodewords:10 mode:ALL error:error]) {
     return nil;

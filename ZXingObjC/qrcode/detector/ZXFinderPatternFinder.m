@@ -33,10 +33,10 @@ int const FINDER_PATTERN_MAX_MODULES = 57;
 NSInteger centerCompare(id center1, id center2, void *context);
 NSInteger furthestFromAverageCompare(id center1, id center2, void *context);
 
-@property (nonatomic, retain) ZXBitMatrix *image;
-@property (nonatomic, retain) NSMutableArray *possibleCenters;
+@property (nonatomic, strong) ZXBitMatrix *image;
+@property (nonatomic, strong) NSMutableArray *possibleCenters;
 @property (nonatomic, assign) BOOL hasSkipped;
-@property (nonatomic, assign) id <ZXResultPointCallback> resultPointCallback;
+@property (nonatomic, unsafe_unretained) id <ZXResultPointCallback> resultPointCallback;
 
 - (float)centerFromEnd:(int *)stateCount end:(int)end;
 - (int)findRowSkip;
@@ -69,12 +69,6 @@ NSInteger furthestFromAverageCompare(id center1, id center2, void *context);
   return self;
 }
 
-- (void)dealloc {
-  [image release];
-  [possibleCenters release];
-
-  [super dealloc];
-}
 
 - (ZXFinderPatternInfo *)find:(ZXDecodeHints *)hints error:(NSError **)error {
   BOOL tryHarder = hints != nil && hints.tryHarder;
@@ -166,7 +160,7 @@ NSInteger furthestFromAverageCompare(id center1, id center2, void *context);
     return nil;
   }
   [ZXResultPoint orderBestPatterns:patternInfo];
-  return [[[ZXFinderPatternInfo alloc] initWithPatternCenters:patternInfo] autorelease];
+  return [[ZXFinderPatternInfo alloc] initWithPatternCenters:patternInfo];
 }
 
 /**
@@ -359,7 +353,7 @@ NSInteger furthestFromAverageCompare(id center1, id center2, void *context);
       }
 
       if (!found) {
-        ZXResultPoint *point = [[[ZXQRCodeFinderPattern alloc] initWithPosX:centerJ posY:centerI estimatedModuleSize:estimatedModuleSize] autorelease];
+        ZXResultPoint *point = [[ZXQRCodeFinderPattern alloc] initWithPosX:centerJ posY:centerI estimatedModuleSize:estimatedModuleSize];
         [self.possibleCenters addObject:point];
         if (self.resultPointCallback != nil) {
           [self.resultPointCallback foundPossibleResultPoint:point];
@@ -427,7 +421,7 @@ NSInteger furthestFromAverageCompare(id center1, id center2, void *context);
  * Orders by ZXFinderPattern count, descending.
  */
 NSInteger centerCompare(id center1, id center2, void *context) {
-  float average = [(NSNumber *)context floatValue];
+  float average = [(__bridge NSNumber *)context floatValue];
 
   if ([((ZXQRCodeFinderPattern *)center2) count] == [((ZXQRCodeFinderPattern *)center1) count]) {
     float dA = fabsf([((ZXQRCodeFinderPattern *)center2) estimatedModuleSize] - average);
@@ -442,7 +436,7 @@ NSInteger centerCompare(id center1, id center2, void *context) {
  * Orders by furthest from average
  */
 NSInteger furthestFromAverageCompare(id center1, id center2, void *context) {
-  float average = [(NSNumber *)context floatValue];
+  float average = [(__bridge NSNumber *)context floatValue];
 
   float dA = fabsf([((ZXQRCodeFinderPattern *)center2) estimatedModuleSize] - average);
   float dB = fabsf([((ZXQRCodeFinderPattern *)center1) estimatedModuleSize] - average);
@@ -472,7 +466,7 @@ NSInteger furthestFromAverageCompare(id center1, id center2, void *context) {
     float average = totalModuleSize / (float)startSize;
     float stdDev = (float)sqrt(square / startSize - average * average);
 
-    [self.possibleCenters sortUsingFunction:furthestFromAverageCompare context:[NSNumber numberWithFloat:average]];
+    [self.possibleCenters sortUsingFunction:furthestFromAverageCompare context:(__bridge void *)([NSNumber numberWithFloat:average])];
 
     float limit = MAX(0.2f * average, stdDev);
 
@@ -493,9 +487,9 @@ NSInteger furthestFromAverageCompare(id center1, id center2, void *context) {
 
     float average = totalModuleSize / (float)[self.possibleCenters count];
 
-    [self.possibleCenters sortUsingFunction:centerCompare context:[NSNumber numberWithFloat:average]];
+    [self.possibleCenters sortUsingFunction:centerCompare context:(__bridge void *)([NSNumber numberWithFloat:average])];
 
-    self.possibleCenters = [[[NSMutableArray alloc] initWithArray:[possibleCenters subarrayWithRange:NSMakeRange(0, 3)]] autorelease];
+    self.possibleCenters = [[NSMutableArray alloc] initWithArray:[possibleCenters subarrayWithRange:NSMakeRange(0, 3)]];
   }
 
   return [NSMutableArray arrayWithObjects:[self.possibleCenters objectAtIndex:0], [self.possibleCenters objectAtIndex:1], [self.possibleCenters objectAtIndex:2], nil];

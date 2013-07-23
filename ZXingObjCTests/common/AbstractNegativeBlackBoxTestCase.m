@@ -50,7 +50,7 @@
 
 @interface AbstractNegativeBlackBoxTestCase ()
 
-@property (nonatomic, retain) NSMutableArray *testResults;
+@property (nonatomic, strong) NSMutableArray *testResults;
 
 - (NSString *)pathInBundle:(NSURL *)file;
 - (BOOL)checkForFalsePositives:(ZXImage *)image rotationInDegrees:(CGFloat)rotationInDegrees;
@@ -63,21 +63,16 @@
 
 // Use the multiformat reader to evaluate all decoders in the system.
 - (id)initWithInvocation:(NSInvocation *)anInvocation testBasePathSuffix:(NSString *)testBasePathSuffix {
-  if (self = [super initWithInvocation:anInvocation testBasePathSuffix:testBasePathSuffix barcodeReader:[[[ZXMultiFormatReader alloc] init] autorelease] expectedFormat:0]) {
+  if (self = [super initWithInvocation:anInvocation testBasePathSuffix:testBasePathSuffix barcodeReader:[[ZXMultiFormatReader alloc] init] expectedFormat:0]) {
     self.testResults = [NSMutableArray array];
   }
 
   return self;
 }
 
-- (void)dealloc {
-  [testResults release];
-
-  [super dealloc];
-}
 
 - (void)addTest:(int)falsePositivesAllowed rotation:(float)rotation {
-  [self.testResults addObject:[[[NegativeTestResult alloc] initWithFalsePositivesAllowed:falsePositivesAllowed rotation:rotation] autorelease]];
+  [self.testResults addObject:[[NegativeTestResult alloc] initWithFalsePositivesAllowed:falsePositivesAllowed rotation:rotation]];
 }
 
 - (NSString *)pathInBundle:(NSURL *)file {
@@ -110,7 +105,6 @@
       }
     }
 
-    [image release];
   }
 
   int totalFalsePositives = 0;
@@ -143,8 +137,8 @@
  */
 - (BOOL)checkForFalsePositives:(ZXImage *)image rotationInDegrees:(CGFloat)rotationInDegrees {
   ZXImage *rotatedImage = [self rotateImage:image degrees:rotationInDegrees];
-  ZXLuminanceSource *source = [[[ZXCGImageLuminanceSource alloc] initWithCGImage:rotatedImage.cgimage] autorelease];
-  ZXBinaryBitmap *bitmap = [[[ZXBinaryBitmap alloc] initWithBinarizer:[[[ZXHybridBinarizer alloc] initWithSource:source] autorelease]] autorelease];
+  ZXLuminanceSource *source = [[ZXCGImageLuminanceSource alloc] initWithCGImage:rotatedImage.cgimage];
+  ZXBinaryBitmap *bitmap = [[ZXBinaryBitmap alloc] initWithBinarizer:[[ZXHybridBinarizer alloc] initWithSource:source]];
   NSError *error = nil;
   ZXResult *result = [self.barcodeReader decode:bitmap error:&error];
   if (result) {

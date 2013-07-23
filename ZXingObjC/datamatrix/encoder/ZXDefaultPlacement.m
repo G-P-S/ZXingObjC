@@ -55,14 +55,12 @@
 }
 
 - (void)dealloc {
-  [_codewords release];
 
   if (_bits != NULL) {
     free(_bits);
     _bits = NULL;
   }
 
-  [super dealloc];
 }
 
 - (BOOL)bitAtCol:(int)col row:(int)row {

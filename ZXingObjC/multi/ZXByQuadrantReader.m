@@ -22,7 +22,7 @@
 
 @interface ZXByQuadrantReader ()
 
-@property (nonatomic, assign) id<ZXReader> delegate;
+@property (nonatomic, unsafe_unretained) id<ZXReader> delegate;
 
 @end
 

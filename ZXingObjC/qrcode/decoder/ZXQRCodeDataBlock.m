@@ -20,7 +20,7 @@
 
 @interface ZXQRCodeDataBlock ()
 
-@property (nonatomic, retain) NSMutableArray *codewords;
+@property (nonatomic, strong) NSMutableArray *codewords;
 @property (nonatomic, assign) int numDataCodewords;
 
 @end
@@ -39,11 +39,6 @@
   return self;
 }
 
-- (void)dealloc {
-  [codewords release];
-
-  [super dealloc];
-}
 
 
 /**
@@ -74,7 +69,7 @@
         [newCodewords addObject:[NSNull null]];
       }
 
-      [result addObject:[[[ZXQRCodeDataBlock alloc] initWithNumDataCodewords:numDataCodewords codewords:newCodewords] autorelease]];
+      [result addObject:[[ZXQRCodeDataBlock alloc] initWithNumDataCodewords:numDataCodewords codewords:newCodewords]];
     }
   }
 

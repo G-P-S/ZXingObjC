@@ -21,7 +21,7 @@
 
 @property (nonatomic, assign) int currentRowIndex;
 @property (nonatomic, assign) int height;
-@property (nonatomic, retain) NSArray *rowMatrix;
+@property (nonatomic, strong) NSArray *rowMatrix;
 @property (nonatomic, assign) int width;
 
 @end
@@ -48,11 +48,6 @@
   return self;
 }
 
-- (void)dealloc {
-  [rowMatrix release];
-
-  [super dealloc];
-}
 
 - (void)setX:(int)x y:(int)y value:(unsigned char)value {
   [[self.rowMatrix objectAtIndex:y] setX:x value:value];

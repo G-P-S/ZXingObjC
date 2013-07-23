@@ -80,7 +80,6 @@
   CGColorSpaceRelease(colorSpace);
 
   CGImageRef result = CGBitmapContextCreateImage(newContext);
-  [NSMakeCollectable(result) autorelease];
 
   CGContextRelease(newContext);
 
@@ -155,7 +154,6 @@
     free(data);
   }
 
-  [super dealloc];
 }
 
 - (unsigned char *)row:(int)y {
@@ -285,12 +283,11 @@
                      self.image);
 
   CGImageRef rotatedImage = CGBitmapContextCreateImage(context);
-  [NSMakeCollectable(rotatedImage) autorelease];
 
   CFRelease(context);
 
   int _width = self.width;
-  return [[[ZXCGImageLuminanceSource alloc] initWithCGImage:rotatedImage left:top top:sourceWidth - (left + _width) width:self.height height:_width] autorelease];
+  return [[ZXCGImageLuminanceSource alloc] initWithCGImage:rotatedImage left:top top:sourceWidth - (left + _width) width:self.height height:_width];
 }
 
 @end

@@ -54,7 +54,7 @@ ZX(<CAAction ZXAVC(AVCaptureVideoDataOutputSampleBufferDelegate)>) {
     ZXCaptureDevice *capture_device;
     ZXCaptureDeviceInput *input;
     ZXCaptureVideoOutput *output;
-    id<ZXCaptureDelegate> delegate;
+    __weak id<ZXCaptureDelegate> delegate;
     )
     
   int order_in_skip;
@@ -77,16 +77,16 @@ ZX(<CAAction ZXAVC(AVCaptureVideoDataOutputSampleBufferDelegate)>) {
   BOOL cameraIsReady;
 }
 
-@property (nonatomic, assign) id<ZXCaptureDelegate> delegate;
+@property (nonatomic, weak) id<ZXCaptureDelegate> delegate;
 @property (nonatomic, copy) NSString *captureToFilename;
 @property (nonatomic) CGAffineTransform transform;
-@property (nonatomic, readonly) ZXCaptureVideoOutput *output;
-@property (nonatomic, readonly) CALayer *layer;
-@property (nonatomic, retain) ZXCaptureDevice *captureDevice;
+@property (weak, nonatomic, readonly) ZXCaptureVideoOutput *output;
+@property (weak, nonatomic, readonly) CALayer *layer;
+@property (nonatomic, strong) ZXCaptureDevice *captureDevice;
 @property (nonatomic, assign) BOOL mirror;
 @property (nonatomic, readonly) BOOL running;
-@property (nonatomic, retain) id<ZXReader> reader;
-@property (nonatomic, retain) ZXDecodeHints *hints;
+@property (nonatomic, strong) id<ZXReader> reader;
+@property (nonatomic, strong) ZXDecodeHints *hints;
 @property (nonatomic, assign) CGFloat rotation;
 
 - (id)init;
@@ -116,13 +116,13 @@ ZX(<CAAction ZXAVC(AVCaptureVideoDataOutputSampleBufferDelegate)>) {
 @interface ZXCapture : NSObject {
 }
 
-@property (nonatomic,assign) id<ZXCaptureDelegate> delegate;
+@property (nonatomic,weak) id<ZXCaptureDelegate> delegate;
 @property (nonatomic,copy) NSString *captureToFilename;
 @property (nonatomic) CGAffineTransform transform;
 @property (nonatomic, readonly) void *output;
-@property (nonatomic, readonly) CALayer *layer;
-@property (nonatomic, retain) id<ZXReader> reader;
-@property (nonatomic, retain) ZXDecodeHints *hints;
+@property (weak, nonatomic, readonly) CALayer *layer;
+@property (nonatomic, strong) id<ZXReader> reader;
+@property (nonatomic, strong) ZXDecodeHints *hints;
 @property (nonatomic, assign) CGFloat rotation;
 
 - (id)init;

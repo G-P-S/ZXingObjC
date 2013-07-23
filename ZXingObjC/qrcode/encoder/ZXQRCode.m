@@ -41,14 +41,6 @@ int const NUM_MASK_PATTERNS = 8;
   return self;
 }
 
-- (void)dealloc {
-  [mode release];
-  [ecLevel release];
-  [matrix release];
-  [version release];
-
-  [super dealloc];
-}
 
 - (NSString *)description {
   NSMutableString *result = [NSMutableString stringWithCapacity:200];

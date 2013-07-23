@@ -19,7 +19,7 @@
 
 @interface ZXBlockParsedResult ()
 
-@property (nonatomic, retain) ZXDecodedInformation *decodedInformation;
+@property (nonatomic, strong) ZXDecodedInformation *decodedInformation;
 @property (nonatomic, assign) BOOL finished;
 
 @end
@@ -42,10 +42,5 @@
   return self;
 }
 
-- (void)dealloc {
-  [decodedInformation release];
-
-  [super dealloc];
-}
 
 @end

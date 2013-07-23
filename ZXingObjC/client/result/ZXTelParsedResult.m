@@ -41,16 +41,9 @@
 }
 
 + (id)telParsedResultWithNumber:(NSString *)number telURI:(NSString *)telURI title:(NSString *)title {
-  return [[[self alloc] initWithNumber:number telURI:telURI title:title] autorelease];
+  return [[self alloc] initWithNumber:number telURI:telURI title:title];
 }
 
-- (void)dealloc {
-  [number release];
-  [telURI release];
-  [title release];
-
-  [super dealloc];
-}
 
 - (NSString *)displayResult {
   NSMutableString *result = [NSMutableString stringWithCapacity:20];

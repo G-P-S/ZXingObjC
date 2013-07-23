@@ -21,7 +21,7 @@
 @interface ZXDataMatrixDataBlock ()
 
 @property (nonatomic, assign) int numDataCodewords;
-@property (nonatomic, retain) NSMutableArray *codewords;
+@property (nonatomic, strong) NSMutableArray *codewords;
 
 @end
 
@@ -39,11 +39,6 @@
   return self;
 }
 
-- (void)dealloc {
-  [codewords release];
-
-  [super dealloc];
-}
 
 
 /**
@@ -70,7 +65,7 @@
       for (int j = 0; j < numBlockCodewords; j++) {
         [tempCodewords addObject:[NSNumber numberWithInt:0]];
       }
-      [result addObject:[[[ZXDataMatrixDataBlock alloc] initWithNumDataCodewords:numDataCodewords codewords:tempCodewords] autorelease]];
+      [result addObject:[[ZXDataMatrixDataBlock alloc] initWithNumDataCodewords:numDataCodewords codewords:tempCodewords]];
       numResultBlocks++;
     }
   }

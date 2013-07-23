@@ -26,7 +26,7 @@ const int MIN_DYNAMIC_RANGE = 24;
 
 @interface ZXHybridBinarizer ()
 
-@property (nonatomic, retain) ZXBitMatrix *matrix;
+@property (nonatomic, strong) ZXBitMatrix *matrix;
 
 - (int **)calculateBlackPoints:(unsigned char *)luminances subWidth:(int)subWidth subHeight:(int)subHeight width:(int)width height:(int)height;
 - (void)calculateThresholdForBlock:(unsigned char *)luminances subWidth:(int)subWidth subHeight:(int)subHeight width:(int)width height:(int)height blackPoints:(int **)blackPoints matrix:(ZXBitMatrix *)matrix;
@@ -47,11 +47,6 @@ const int MIN_DYNAMIC_RANGE = 24;
   return self;
 }
 
-- (void)dealloc {
-  [matrix release];
-
-  [super dealloc];
-}
 
 /**
  * Calculates the final BitMatrix once for all requests. This could be called once from the
@@ -77,7 +72,7 @@ const int MIN_DYNAMIC_RANGE = 24;
     }
     int **blackPoints = [self calculateBlackPoints:_luminances subWidth:subWidth subHeight:subHeight width:width height:height];
 
-    ZXBitMatrix *newMatrix = [[[ZXBitMatrix alloc] initWithWidth:width height:height] autorelease];
+    ZXBitMatrix *newMatrix = [[ZXBitMatrix alloc] initWithWidth:width height:height];
     [self calculateThresholdForBlock:_luminances subWidth:subWidth subHeight:subHeight width:width height:height blackPoints:blackPoints matrix:newMatrix];
     self.matrix = newMatrix;
 
@@ -95,7 +90,7 @@ const int MIN_DYNAMIC_RANGE = 24;
 }
 
 - (ZXBinarizer *)createBinarizer:(ZXLuminanceSource *)source {
-  return [[[ZXHybridBinarizer alloc] initWithSource:source] autorelease];
+  return [[ZXHybridBinarizer alloc] initWithSource:source];
 }
 
 /**

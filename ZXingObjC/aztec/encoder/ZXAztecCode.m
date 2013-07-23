@@ -24,10 +24,5 @@
 @synthesize layers;
 @synthesize size;
 
-- (void)dealloc {
-  [matrix release];
-
-  [super dealloc];
-}
 
 @end

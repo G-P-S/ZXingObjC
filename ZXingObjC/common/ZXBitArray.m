@@ -62,7 +62,6 @@
     bits = NULL;
   }
 
-  [super dealloc];
 }
 
 - (int)sizeInBytes {

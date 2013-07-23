@@ -19,9 +19,9 @@
 
 @interface ZXFinderPatternInfo ()
 
-@property (nonatomic, retain) ZXQRCodeFinderPattern *bottomLeft;
-@property (nonatomic, retain) ZXQRCodeFinderPattern *topLeft;
-@property (nonatomic, retain) ZXQRCodeFinderPattern *topRight;
+@property (nonatomic, strong) ZXQRCodeFinderPattern *bottomLeft;
+@property (nonatomic, strong) ZXQRCodeFinderPattern *topLeft;
+@property (nonatomic, strong) ZXQRCodeFinderPattern *topRight;
 
 @end
 
@@ -41,12 +41,5 @@
   return self;
 }
 
-- (void)dealloc {
-  [bottomLeft release];
-  [topLeft release];
-  [topRight release];
-
-  [super dealloc];
-}
 
 @end
